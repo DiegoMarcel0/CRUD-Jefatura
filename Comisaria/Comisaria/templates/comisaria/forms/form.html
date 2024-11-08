@@ -1,0 +1,17 @@
+{% extends 'comisaria/base.html' %}
+
+{%block titulo %} Ola{% endblock %}
+
+{% block contenido %}
+<form action="" method="post">
+    {% csrf_token %}
+
+    {% if form %}
+    {{ form }}
+    {% else %}
+    <p><h1>Nel pastel</h1></p>
+    {% endif %}
+    
+    <input type="submit" value="Enviar">
+</form>
+{% endblock %}

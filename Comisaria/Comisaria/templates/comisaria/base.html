@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{%block titulo %} {% endblock %}</title>
+</head>
+<body>
+    <h2>Menú de Navegación</h2>
+    <ul>
+        <li><a href="{% url 'inicio' %}">Inicio</a></li>
+        <li><a href="{% url 'caso' %}">Casos</a></li>
+        <li><a href="insertar">Reportes de casos</a></li>
+        <li><a href="datos">Reporte de Servicio</a></li>
+        <li><a href="{% url 'empleado' %}">Empleados</a></li>
+        <li><a href="{% url 'oficial' %}">Oficiales</a></li>
+        <li><a href="datos">Jefatura</a></li>
+        {% if user.is_authenticated %}
+        <li>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">logout</button>
+        </form></li>
+        {% else %}
+        <li><a href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+    </ul>
+    {%block contenido %} {% endblock %}
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% extends 'comisaria/base.html' %}
+
+{%block titulo %}Iniciar sesion{% endblock %}
+
+{% block contenido %}
+    <h2>Login Normal </h2>
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Iniciar sesion">
+    </form>
+    
+{% endblock %}

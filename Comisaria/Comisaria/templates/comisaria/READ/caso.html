@@ -1,0 +1,38 @@
+{% extends 'comisaria/base.html' %}
+
+{%block titulo %} Empleados {% endblock %}
+
+{% block contenido %}
+    {% if casos %}
+    <ul>
+        
+    </ul>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre clave</th>
+                <th>Numero de placa</th>
+                <th>Estatus</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for caso in casos %}
+            <tr>
+                <td>{{ caso.titulo }}</td>
+                <td>{{ caso.num_placa.num_placa }}</td>
+                <td>{{ caso.get_estatus_display }}</td>
+                <td><a href="{% url 'caso_deta' caso.id %}">Ver</a> | <a href="{% url 'caso_edit' caso.id  %}">Editar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No polls are available.</p>
+    {% endif %}
+    {% if message_error %}
+    <p>Formulario Invalido</p>
+    {% endif %}
+
+    <p><a href="{% url 'caso_crear' %}">Crear CASO</a></p>
+{% endblock %}

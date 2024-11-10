@@ -25,14 +25,22 @@ class CustomUserCreationForm2(UserCreationForm):
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = Empleado
-        fields = UserChangeForm.Meta.fields
+        fields = ['first_name', 'last_name', 'email', 'puesto', 'register_date', 'num_phone', 'username']
 
+class EmpleadoDetail(forms.ModelForm):
+    class Meta:
+        model = Empleado
+        fields = ['first_name', 'last_name', 'email', 'puesto', 'register_date', 'num_phone', 'username']
 
 class OficialesForm(forms.ModelForm):
     class Meta:
         model = oficiales
-        fields = '__all__'
+        fields = ['id_emp', 'rank']
         #fields = ['first_name', 'last_name', 'email', 'puesto', 'register_date', 'num_phone']
+class OficialesUpdateForm(forms.ModelForm):
+    class Meta:
+        model = oficiales
+        fields = ['rank']
 
 class CasosForm(forms.ModelForm):
     class Meta:

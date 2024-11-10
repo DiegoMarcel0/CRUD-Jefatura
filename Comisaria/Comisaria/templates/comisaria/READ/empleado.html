@@ -1,0 +1,39 @@
+{% extends 'comisaria/base.html' %}
+
+{%block titulo %} Empleados {% endblock %}
+
+{% block contenido %}
+    {% if empleados %}
+    <ul>
+        
+    </ul>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Nombre(s)</th>
+                <th>Apellido Paterno</th>
+                <th>Puesto</th>
+                <th>Salario</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for emp in empleados %}
+            <tr>
+                <td>{{ emp.username }}</td>
+                <td>{{ emp.first_name }}</td>
+                <td>{{ emp.last_name }}</td>
+                <td>{{ emp.get_puesto_display }}</td>
+                <td>1000</td>
+                <td><a href="{% url 'empleado_deta' emp.id %}">Ver</a> | <a href="{% url 'empleado_edit' emp.id %}">Editar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No polls are available.</p>
+    {% endif %}
+
+    <p><a href="{% url 'empleado_crear' %}">Crear EMPLEADO</a></p>
+{% endblock %}

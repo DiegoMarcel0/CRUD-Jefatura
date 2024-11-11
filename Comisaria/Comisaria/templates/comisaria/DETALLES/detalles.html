@@ -1,38 +1,11 @@
 {% extends 'comisaria/base.html' %}
 
-{%block titulo %} Ola{% endblock %}
+{%block titulo %} Detalles{% endblock %}
 
 {% block contenido %}
-    <form action="" method="post">
-        <p>
-            <label for="id_first_name">Nombre(s):</label>
-            <input type="text" name="first_name" maxlength="50" value="{{empleado.first_name}}" disabled required id="id_first_name" >
-          </p>
-          <p>
-            <label for="id_last_name">Apellido paterno:</label>
-            <input type="text" name="last_name" maxlength="50" required id="id_last_name" value="{{empleado.last_name}}" disabled >
-          </p>
-        <p>
-            <label for="id_last_name2">Apellido materno:</label>
-            <input type="text" name="last_name2" maxlength="50" required id="id_last_name2" value="{{empleado.last_name2}}" disabled>
-           </p>
-        <p>
-            <label for="id_email">Correo:</label>
-            <input type="email" name="email" maxlength="254" required id="id_email" value="{{empleado.email}}" disabled>
-          </p>
-        <p>
-            <label for="id_puesto">Puesto:</label>
-            <input type="text" name="puesto" maxlength="30" required id="id_puesto" value="{{empleado.get_puesto_display}}" disabled>
-           </p>
-         <p>
-            <label for="id_register_date">Fecha de registro:</label>
-            <input type="text" name="register_date" value="{{empleado.register_date}}" disabled required id="id_register_date">
-            <input type="hidden" name="initial-" value="2024-11-09 08:09:22" id="initial-id_register_date">
-          </p>
-         <p>
-            <label for="id_num_phone">Telefono:</label>
-            <input type="text" name="num_phone" maxlength="14" required id="id_num_phone" value="{{empleado.num_phone}}" disabled>
-        </p>
-    </form>
+<form>
+    
+    {{ form.as_p }}
+</form>
     
 {% endblock %}

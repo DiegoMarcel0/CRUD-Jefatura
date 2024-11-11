@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from .forms import *#CustomUserCreationForm, CasosForm, OficialesForm, ReporteCasoForm, ReporteServicioForm
 from django.contrib.auth.decorators import login_required
@@ -32,11 +32,22 @@ class OficialView(generic.ListView):
     context_object_name ="oficiales"
     def get_queryset(self):
         return oficiales.objects.order_by("num_placa")[:5]
+class ReporteCasoView(generic.ListView):
+    template_name = "comisaria/READ/reportecaso.html"
+    context_object_name ="reportes"
+    def get_queryset(self):
+        return reportes_caso.objects.order_by("titulo")[:5]
+    
+class ReporteServicioView(generic.ListView):
+    template_name = "comisaria/READ/reporteServicio.html"
+    context_object_name ="reportes"
+    def get_queryset(self):
+        return reportes_de_servicio.objects.order_by("titulo")[:5]
 
 #EDIT
 class EmpleadoUpdate(UpdateView):
     model = Empleado
-    form_class = CustomUserChangeForm
+    form_class = EmpleadoUpdateForm
     template_name = 'comisaria/forms/form.html'
     success_url = reverse_lazy('empleado')
 
@@ -47,37 +58,63 @@ class OficialUpdate(UpdateView):
     success_url = reverse_lazy('oficial')
 class CasoUpdate(UpdateView):
     model = registro_casos
-    form_class = CasosForm
+    form_class = CasoUpdateForm
+    template_name = 'comisaria/forms/form.html'
+    success_url = reverse_lazy('caso')
+class ReporteServicioUpdate(UpdateView):
+    model = reportes_de_servicio
+    form_class = ReporteServicioUpdateForm
+    template_name = 'comisaria/forms/form.html'
+    success_url = reverse_lazy('reporte')
+class ReporteCasoUpdate(UpdateView):
+    model = reportes_caso
+    form_class = ReporteCasoUpdateForm
     template_name = 'comisaria/forms/form.html'
     success_url = reverse_lazy('caso')
 #DETALLES
-class EmpleadoDetallesView2(generic.DetailView):
+class EmpleadoDetallesView(generic.DetailView):
     model = Empleado
     template_name = "comisaria/DETALLES/detalles.html"
-class EmpleadoDetallesView(UpdateView):
-    model = Empleado
-    form_class = EmpleadoDetail
-    template_name = 'comisaria/forms/form.html'
-    success_url = reverse_lazy('empleado')
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        for field in form.fields.values():
-            field.widget.attrs['disabled'] = 'disabled'
-        return form
+    context_object_name="empleado"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = EmpleadoDetailForm(instance=self.object)
+        return context
 
 class CasoDetallesView(generic.DetailView):
     model = registro_casos
-    template_name = "comisaria/DETALLES/detalles.html"
+    template_name = "comisaria/DETALLES/detallesCaso.html"
+    context_object_name = 'caso'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CasosDetailForm(instance=self.object)
+        return context
 class OficialDetallesView(generic.DetailView):
     model = oficiales
     template_name = "comisaria/DETALLES/detalles.html"
-    
-    
-    #Empleado.last_name.verbose_name
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = OficialDetailForm(instance=self.object)
+        return context
+class ReporteServicioDetallesView(generic.DetailView):
+    model = reportes_de_servicio
+    template_name = "comisaria/DETALLES/detalles.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = ReporteServicioDetailForm(instance=self.object)
+        return context
+class ReporteCasoDetallesView(generic.DetailView):
+    model = reportes_caso
+    template_name = "comisaria/DETALLES/detalles.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Instanciar el formulario con la instancia del producto
+        context['form'] = ReporteCasoDetailForm(instance=self.object)
+        return context
 
 #FORMS Creacion
 @login_required
-def empleado_form(request):
+def empleado_view(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         print(form.data)
@@ -96,7 +133,7 @@ def empleado_form(request):
 
 
 @login_required
-def oficial_form(request):
+def oficial_view(request):
     if request.method == "POST":
         form = OficialesForm(request.POST)
         print(form.data)
@@ -109,12 +146,9 @@ def oficial_form(request):
         message_error = None
     form = OficialesForm()
     return render(request, 'comisaria/forms/form.html', {'form': form.as_p, 'error_message': message_error})
-    #formu = OficialesForm()
-    #print(formu.get_context)
-    #return render(request, 'comisaria/empleado.html', {'form': formu.as_p})
 
 @login_required
-def caso_form(request):
+def caso_view(request):
     if request.method == "POST":
         form = CasosForm(request.POST)
         print(form.data)
@@ -127,16 +161,39 @@ def caso_form(request):
         message_error = None
     form = CasosForm()
     return render(request, 'comisaria/forms/form.html', {'form': form.as_p, 'error_message': message_error})
-    #formu = CasosForm()
-    #print(formu.get_context)
-    #return render(request, 'comisaria/empleado.html', {'form': formu.as_p})
 @login_required
-def reporte_caso_form(request):
-    formu = ReporteCasoForm()
-    #print(formu.get_context)
-    return render(request, 'comisaria/empleado.html', {'form': formu.as_p})
+def reporte_caso_view(request, caso_id):
+    #reporte = get_object_or_404(registro_casos, pk = caso_id)
+    if request.method == "POST":
+        form = ReporteCasoForm(request.POST)
+        #print(form.cleaned_data)
+        #form.id_caso = caso_id
+        #print(form.data)
+        #print(form.data)
+        
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.id_caso = get_object_or_404(registro_casos, pk = caso_id)
+            form.save()
+            return HttpResponseRedirect(reverse("caso"))
+        else:
+            message_error = "Formulario invalido"
+            print(message_error)
+    else:
+        message_error = None
+    form = ReporteCasoForm()
+    return render(request, 'comisaria/forms/form.html', {'form': form.as_p, 'error_message': message_error})
 @login_required
-def reporte_servicio_form(request):
-    formu = ReporteServicioForm()
-    #print(formu.get_context)
-    return render(request, 'comisaria/empleado.html', {'form': formu.as_p})
+def reporte_servicio_view(request):
+    if request.method == "POST":
+        form = ReporteServicioForm(request.POST)
+        print(form.data)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse("caso"))
+        else:
+            message_error = "Formulario invalido"
+    else:
+        message_error = None
+    form = ReporteServicioForm()
+    return render(request, 'comisaria/forms/form.html', {'form': form.as_p, 'error_message': message_error})

@@ -1,0 +1,36 @@
+{% extends 'comisaria/base.html' %}
+
+{%block titulo %} Detalles Caso{% endblock %}
+
+{% block contenido %}
+<form>
+    
+    {{ form.as_p }}
+</form>
+{% if caso.reportes_caso_set.all %}
+<ul>
+    
+</ul>
+<table>
+    <thead>
+        <tr>
+            <th>Titulo</th>
+            <th>tipo</th>
+            <th>Editar</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reporte in caso.reportes_caso_set.all %}
+        <tr>
+            <td>{{ reporte.titulo }}</td>
+            <td>{{ reporte.get_tipo_display }}</td>
+            <td><a href="{% url 'reporte_caso_deta' caso.id reporte.id  %}">Ver</a> | <a href="{% url 'reporte_caso_edit' caso.id reporte.id %}">Editar</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No polls are available.</p>
+{% endif %}
+<p><a href="{% url 'reporte_caso_crear'  caso.id%}">Crear REPORTE DE CASO</a></p>
+{% endblock %}

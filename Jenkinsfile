@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Clona el repositorio de GitHub
-                git branch: 'main', url: 'https://github.com/Vaikra/Com.git' 
+                git branch: 'main', url: 'https://github.com/DiegoMarcel0/CRUD-Jefatura' 
             }
         }
 

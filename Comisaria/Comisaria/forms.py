@@ -5,52 +5,48 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 
 ##CREACION DE COSOS
-"""
-class CustomUserLoginForm(UserCreationForm):
-
-    class Meta(UserCreationForm):
-        model = Empleado
-        fields = UserChangeForm.Meta.fields
-        #fields = ['username', 'first_name', 'last_name', 'email', 'puesto', 'register_date', 'num_phone', 'password']
-"""
 class CustomUserCreationForm(UserCreationForm):
-
     class Meta(UserCreationForm):
         model = Empleado
-        fields = ['first_name', 'last_name','last_name2', 'email', 'puesto', 'register_date', 'num_phone']
-        #fields = UserCreationForm.Meta.fields
-"""
-class CustomUserCreationForm2(UserCreationForm):
+        fields = ['first_name', 'last_name','last_name2', 'email', 'puesto', 'register_date', 'num_phone', 'salario']
+        widgets = {
+            'register_date': forms.DateInput(attrs={'type': 'date'}), 
+        }
 
-    class Meta(UserCreationForm):
-        model = Empleado
-        fields = ['first_name', 'last_name', 'email', 'puesto', 'register_date', 'num_phone', 'username']
-"""
 class OficialesForm(forms.ModelForm):
     class Meta:
         model = oficiales
         fields = ['id_emp', 'rank']
-        #fields = ['first_name', 'last_name', 'email', 'puesto', 'register_date', 'num_phone']
 class CasosForm(forms.ModelForm):
     class Meta:
         model = registro_casos
         fields = '__all__'
+        widgets = {
+            'fecha_inicio': forms.DateInput(attrs={'type': 'date'}),  
+            'fecha_fin': forms.DateInput(attrs={'type': 'date'}),  
+        }
 
 class ReporteCasoForm(forms.ModelForm):
     class Meta:
         model = reportes_caso
         fields = ['titulo', 'contenido','fecha_reporte', 'tipo']
+        widgets = {
+            'fecha_reporte': forms.DateInput(attrs={'type': 'date'}),  # Utiliza el tipo de input HTML5
+        }
 
 class ReporteServicioForm(forms.ModelForm):
     class Meta:
         model = reportes_de_servicio
-        fields = '__all__'
+        fields = ['titulo', 'contenido','tipo', 'fecha']
+        widgets = {
+            'fecha': forms.DateInput(attrs={'type': 'date'}), 
+        }
         
 #EDITAR
 class EmpleadoUpdateForm(forms.ModelForm):
     class Meta:
         model = Empleado
-        fields = ['first_name', 'last_name', 'email', 'puesto', 'num_phone', 'username']
+        fields = ['first_name', 'last_name', 'email', 'puesto', 'num_phone', 'salario', 'username']
 class OficialesUpdateForm(forms.ModelForm):
     class Meta:
         model = oficiales
@@ -72,7 +68,7 @@ class DetailBaseForm(forms.ModelForm):
 class EmpleadoDetailForm(DetailBaseForm):
     class Meta:
         model = Empleado
-        fields = ['first_name', 'last_name','last_name2', 'email', 'puesto', 'register_date', 'num_phone']
+        fields = ['first_name', 'last_name','last_name2', 'email', 'puesto', 'register_date', 'num_phone', 'salario']
 
 class OficialDetailForm(DetailBaseForm):
     class Meta:

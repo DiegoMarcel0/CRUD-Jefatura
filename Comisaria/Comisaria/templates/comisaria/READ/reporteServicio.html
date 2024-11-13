@@ -23,7 +23,7 @@
                     <td>{{ reporte.titulo }}</td>
                     <td>{{ reporte.num_placa }}</td>
                     <td>{{ reporte.get_tipo_display }}</td>
-                    <td><a class="btn btn-primary btn-sm" href="{% url 'reporte_servicio_deta' reporte.id %}">Ver</a> | <a class="btn btn-warning btn-sm" href="{% url 'reporte_servicio_edit' reporte.id %}">Editar</a></td>
+                    <td><a class="btn btn-primary btn-sm" href="{% url 'reporte_servicio_deta' reporte.id %}">Ver</a> | <a class="btn btn-warning btn-sm" href="{% url 'reporte_servicio_edit' reporte.id %}">Editar</a> | <a class="btn btn-danger btn-sm" href="{% url 'reporte_servicio_eliminar' reporte.id  %}">Eliminar</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -125,11 +125,9 @@ def empleado_view(request):
             else:
                 return HttpResponseRedirect(reverse("empleado"))
         else:
-            message_error = "Formulario invalido"
-    else:
-        message_error = None
+            return render(request, 'comisaria/forms/form.html', {'form': form})
     form = CustomUserCreationForm()
-    return render(request, 'comisaria/forms/form.html', {'form': form, 'error_message': message_error})
+    return render(request, 'comisaria/forms/form.html', {'form': form})
 
 
 @login_required
@@ -141,11 +139,9 @@ def oficial_view(request):
             form.save()
             return HttpResponseRedirect(reverse("oficial"))
         else:
-            message_error = "Formulario invalido"
-    else:
-        message_error = None
+            return render(request, 'comisaria/forms/form.html', {'form': form})
     form = OficialesForm()
-    return render(request, 'comisaria/forms/form.html', {'form': form, 'error_message': message_error})
+    return render(request, 'comisaria/forms/form.html', {'form': form})
 
 @login_required
 def caso_view(request):
@@ -156,44 +152,55 @@ def caso_view(request):
             form.save()
             return HttpResponseRedirect(reverse("caso"))
         else:
-            message_error = "Formulario invalido"
-    else:
-        message_error = None
+            return render(request, 'comisaria/forms/form.html', {'form': form})
     form = CasosForm()
-    return render(request, 'comisaria/forms/form.html', {'form': form, 'error_message': message_error})
+    return render(request, 'comisaria/forms/form.html', {'form': form})
+
 @login_required
 def reporte_caso_view(request, caso_id):
-    #reporte = get_object_or_404(registro_casos, pk = caso_id)
     if request.method == "POST":
         form = ReporteCasoForm(request.POST)
-        #print(form.cleaned_data)
-        #form.id_caso = caso_id
-        #print(form.data)
-        #print(form.data)
-        
         if form.is_valid():
             form = form.save(commit=False)
             form.id_caso = get_object_or_404(registro_casos, pk = caso_id)
             form.save()
-            return HttpResponseRedirect(reverse("caso"))
+            return HttpResponseRedirect(reverse('caso_deta', kwargs={'pk': caso_id}))
         else:
-            message_error = "Formulario invalido"
-            print(message_error)
-    else:
-        message_error = None
+            return render(request, 'comisaria/forms/form.html', {'form': form})
     form = ReporteCasoForm()
-    return render(request, 'comisaria/forms/form.html', {'form': form, 'error_message': message_error})
+    return render(request, 'comisaria/forms/form.html', {'form': form})
 @login_required
 def reporte_servicio_view(request):
     if request.method == "POST":
         form = ReporteServicioForm(request.POST)
         print(form.data)
         if form.is_valid():
+            form = form.save(commit=False)
+            form.num_placa = get_object_or_404(oficiales, pk = request.user.id)
             form.save()
             return HttpResponseRedirect(reverse("caso"))
         else:
-            message_error = "Formulario invalido"
-    else:
-        message_error = None
+            return render(request, 'comisaria/forms/form.html', {'form': form})
     form = ReporteServicioForm()
-    return render(request, 'comisaria/forms/form.html', {'form': form, 'error_message': message_error})
+    return render(request, 'comisaria/forms/form.html', {'form': form})
+
+def empleado_delete_view(request, id):
+    entidad = get_object_or_404(Empleado, pk = id)
+    entidad.delete()
+    return HttpResponseRedirect(reverse('empleado'))
+def oficial_delete_view(request, id):
+    entidad = get_object_or_404(oficiales, pk = id)
+    entidad.delete()
+    return HttpResponseRedirect(reverse('oficial'))
+def caso_delete_view(request, id):
+    entidad = get_object_or_404(registro_casos, pk = id)
+    entidad.delete()
+    return HttpResponseRedirect(reverse('caso'))
+def reporte_caso_delete_view(request,caso_id, id):
+    entidad = get_object_or_404(reportes_caso, pk = id)
+    entidad.delete()
+    return HttpResponseRedirect(reverse('caso_deta', kwargs={'pk': caso_id}))
+def reporte_servicio_delete_view(request, id):
+    entidad = get_object_or_404(reportes_de_servicio, pk = id)
+    entidad.delete()
+    return HttpResponseRedirect(reverse('reporte_servicio'))

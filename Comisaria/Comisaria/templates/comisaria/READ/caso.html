@@ -23,7 +23,9 @@
                     <td>{{ caso.titulo }}</td>
                     <td>{{ caso.num_placa.num_placa }}</td>
                     <td>{{ caso.get_estatus_display }}</td>
-                    <td><a class="btn btn-primary btn-sm" href="{% url 'caso_deta' caso.id %}">Ver</a> | <a class="btn btn-warning btn-sm" href="{% url 'caso_edit' caso.id  %}">Editar</a></td>
+                    <td><a class="btn btn-primary btn-sm" href="{% url 'caso_deta' caso.id %}">Ver</a> | 
+                        <a class="btn btn-warning btn-sm" href="{% url 'caso_edit' caso.id  %}">Editar</a> | 
+                        <a class="btn btn-danger btn-sm" href="{% url 'caso_eliminar' caso.id  %}">Eliminar</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

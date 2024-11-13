@@ -25,7 +25,7 @@
                     <td>{{ of.id_emp.first_name }}</td>
                     <td>{{ of.id_emp.last_name }}</td>
                     <td>{{ of.get_rank_display }}</td>
-                    <td><a class="btn btn-primary btn-sm" href="{% url 'oficial_deta' of.id %}">Ver</a> | <a class="btn btn-warning btn-sm" href="{% url 'oficial_edit' of.id%}">Editar</a></td>
+                    <td><a class="btn btn-primary btn-sm" href="{% url 'oficial_deta' of.id %}">Ver</a> | <a class="btn btn-warning btn-sm" href="{% url 'oficial_edit' of.id%}">Editar</a> | <a class="btn btn-danger btn-sm" href="{% url 'oficial_eliminar' of.id  %}">Eliminar</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

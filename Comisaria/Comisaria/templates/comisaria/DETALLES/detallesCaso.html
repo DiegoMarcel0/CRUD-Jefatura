@@ -1,17 +1,19 @@
 {% extends 'comisaria/base.html' %}
-
+{% load crispy_forms_tags %}
 {%block titulo %} Detalles Caso{% endblock %}
 
 {% block contenido %}
-<form>
-    
-    {{ form.as_p }}
-</form>
-{% if caso.reportes_caso_set.all %}
-
+<div class="container my-5">
+    <form>
+        {{ form|crispy }}
+    </form>
+</div>
 <div class="d-flex justify-content-end mb-3">
     <a class="btn btn-success" href="{% url 'reporte_caso_crear' caso.id%}">Agregar Reporte de caso</a>
 </div>
+{% if caso.reportes_caso_set.all %}
+
+
 <div class="container my-5"> 
     <table class="table table-striped">
         <thead>
@@ -26,13 +28,15 @@
             <tr>
                 <td>{{ reporte.titulo }}</td>
                 <td>{{ reporte.get_tipo_display }}</td>
-                <td><a class="btn btn-primary btn-sm" href="{% url 'reporte_caso_deta' caso.id reporte.id  %}">Ver</a> | <a class="btn btn-warning btn-sm" href="{% url 'reporte_caso_edit' caso.id reporte.id %}">Editar</a></td>
+                <td><a class="btn btn-primary btn-sm" href="{% url 'reporte_caso_deta' caso.id reporte.id  %}">Ver</a> | 
+                    <a class="btn btn-warning btn-sm" href="{% url 'reporte_caso_edit' caso.id reporte.id %}">Editar</a> | 
+                    <a class="btn btn-danger btn-sm" href="{% url 'reporte_caso_eliminar' caso.id reporte.id %}">Eliminar</a></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
 {% else %}
-<p>No polls are available.</p>
+<p>Sin reportes relacionados</p>
 {% endif %}
 {% endblock %}

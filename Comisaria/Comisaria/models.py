@@ -26,11 +26,11 @@ class Empleado(AbstractUser):
     puesto = models.IntegerField(choices=Puesto.choices, default=Puesto.ADMINISTRATIVO, verbose_name='Puesto')
     register_date = models.DateTimeField(default= timezone.now, null=True, blank=False, verbose_name='Fecha de registro')
     num_phone = models.CharField(max_length=14, default='', blank=False, verbose_name='Telefono')
+    salario = models.DecimalField(max_digits=10, decimal_places=2, default=0.00,blank=False ,verbose_name='Salario')
     class Meta:
         verbose_name = 'Empleado'
         verbose_name_plural = 'Empleados'
     def save(self, *args, **kwargs):
-        #print(self.username)
         if (self.username== None or self.username==""):
             self.username = "{}{}{}".format(self.first_name.split()[0] if self.first_name.strip() else "", 
                                             self.last_name.split()[0] if self.first_name.strip() else "",

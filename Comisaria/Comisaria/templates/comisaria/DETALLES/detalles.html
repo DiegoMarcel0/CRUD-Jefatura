@@ -1,11 +1,13 @@
 {% extends 'comisaria/base.html' %}
-
+{% load crispy_forms_tags %}
 {%block titulo %} Detalles{% endblock %}
 
 {% block contenido %}
-<form>
+<div class="container my-5">
+    <form>
     
-    {{ form }}
-</form>
+        {{ form|crispy }}
+    </form>
+</div>
     
 {% endblock %}

@@ -26,8 +26,8 @@
                 <td>{{ emp.first_name }}</td>
                 <td>{{ emp.last_name }}</td>
                 <td>{{ emp.get_puesto_display }}</td>
-                <td>1000</td>
-                <td><a class="btn btn-primary btn-sm" href="{% url 'empleado_deta' emp.id %}">Ver</a> | <a class="btn btn-warning btn-sm" href="{% url 'empleado_edit' emp.id %}">Editar</a></td>
+                <td>{{ emp.salario }}</td>
+                <td><a class="btn btn-primary btn-sm" href="{% url 'empleado_deta' emp.id %}">Ver</a> | <a class="btn btn-warning btn-sm" href="{% url 'empleado_edit' emp.id %}">Editar</a> | <a class="btn btn-danger btn-sm" href="{% url 'empleado_eliminar' emp.id  %}">Eliminar</a></td>
             </tr>
             {% endfor %}
         </tbody>

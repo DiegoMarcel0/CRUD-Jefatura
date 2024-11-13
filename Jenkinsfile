@@ -16,7 +16,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Instala dependencias del requirements.txt en un contenedor temporal
-                sh 'docker run --rm -v $PWD:/app -w /app python:3.10 pip install -r requirements.txt'
+                bat 'docker run --rm -v $PWD:/app -w /app python:3.10 pip install -r requirements.txt'
 
             }
         }
@@ -24,7 +24,7 @@ pipeline {
         stage('Build and Start Services') {
             steps {
                 // Construye y levanta los contenedores definidos en docker-compose.yml
-                sh 'docker-compose up -d --build'
+                bat 'docker-compose up -d --build'
             }
         }
 
@@ -36,7 +36,7 @@ pipeline {
 
         stage('Check Docker Images') {
             steps {
-                sh 'docker images'
+                bat 'docker images'
             }
         }
 

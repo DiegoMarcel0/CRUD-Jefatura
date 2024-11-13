@@ -3,35 +3,36 @@
 {%block titulo %} Oficiales {% endblock %}
 
 {% block contenido %}
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-success" href="{% url 'oficial_crear' %}">Agregar Oficial</a>
+</div>
     {% if oficiales %}
-    <ul>
-        
-    </ul>
-    <table>
-        <thead>
-            <tr>
-                <th>Numero de placa</th>
-                <th>Nombre(s)</th>
-                <th>Apellido Paterno</th>
-                <th>Rango</th>
-                <th>Editar</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for of in oficiales %}
-            <tr>
-                <td>{{ of.num_placa }}</td>
-                <td>{{ of.id_emp.first_name }}</td>
-                <td>{{ of.id_emp.last_name }}</td>
-                <td>{{ of.get_rank_display }}</td>
-                <td><a href="{% url 'oficial_deta' of.id %}">Ver</a> | <a href="{% url 'oficial_edit' of.id%}">Editar</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container my-5">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Numero de placa</th>
+                    <th>Nombre(s)</th>
+                    <th>Apellido Paterno</th>
+                    <th>Rango</th>
+                    <th>Editar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for of in oficiales %}
+                <tr>
+                    <td>{{ of.num_placa }}</td>
+                    <td>{{ of.id_emp.first_name }}</td>
+                    <td>{{ of.id_emp.last_name }}</td>
+                    <td>{{ of.get_rank_display }}</td>
+                    <td><a class="btn btn-primary btn-sm" href="{% url 'oficial_deta' of.id %}">Ver</a> | <a class="btn btn-warning btn-sm" href="{% url 'oficial_edit' of.id%}">Editar</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% else %}
     <p>No polls are available.</p>
     {% endif %}
 
-    <p><a href="{% url 'oficial_crear' %}">Crear OFICIAL</a></p>
 {% endblock %}

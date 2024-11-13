@@ -8,29 +8,31 @@
     {{ form.as_p }}
 </form>
 {% if caso.reportes_caso_set.all %}
-<ul>
-    
-</ul>
-<table>
-    <thead>
-        <tr>
-            <th>Titulo</th>
-            <th>tipo</th>
-            <th>Editar</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for reporte in caso.reportes_caso_set.all %}
-        <tr>
-            <td>{{ reporte.titulo }}</td>
-            <td>{{ reporte.get_tipo_display }}</td>
-            <td><a href="{% url 'reporte_caso_deta' caso.id reporte.id  %}">Ver</a> | <a href="{% url 'reporte_caso_edit' caso.id reporte.id %}">Editar</a></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-success" href="{% url 'reporte_caso_crear' caso.id%}">Agregar Reporte de caso</a>
+</div>
+<div class="container my-5"> 
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>tipo</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reporte in caso.reportes_caso_set.all %}
+            <tr>
+                <td>{{ reporte.titulo }}</td>
+                <td>{{ reporte.get_tipo_display }}</td>
+                <td><a class="btn btn-primary btn-sm" href="{% url 'reporte_caso_deta' caso.id reporte.id  %}">Ver</a> | <a class="btn btn-warning btn-sm" href="{% url 'reporte_caso_edit' caso.id reporte.id %}">Editar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% else %}
 <p>No polls are available.</p>
 {% endif %}
-<p><a href="{% url 'reporte_caso_crear'  caso.id%}">Crear REPORTE DE CASO</a></p>
 {% endblock %}

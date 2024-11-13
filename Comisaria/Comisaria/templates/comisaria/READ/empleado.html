@@ -4,10 +4,11 @@
 
 {% block contenido %}
     {% if empleados %}
-    <ul>
-        
-    </ul>
-    <table>
+    <div class="d-flex justify-content-end mb-3">
+        <a class="btn btn-success" href="{% url 'empleado_crear' %}">Agregar Empleado</a>
+    </div>
+   <div class="container my-5">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Username</th>
@@ -26,14 +27,14 @@
                 <td>{{ emp.last_name }}</td>
                 <td>{{ emp.get_puesto_display }}</td>
                 <td>1000</td>
-                <td><a href="{% url 'empleado_deta' emp.id %}">Ver</a> | <a href="{% url 'empleado_edit' emp.id %}">Editar</a></td>
+                <td><a class="btn btn-primary btn-sm" href="{% url 'empleado_deta' emp.id %}">Ver</a> | <a class="btn btn-warning btn-sm" href="{% url 'empleado_edit' emp.id %}">Editar</a></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+   </div>
     {% else %}
     <p>No polls are available.</p>
     {% endif %}
 
-    <p><a href="{% url 'empleado_crear' %}">Crear EMPLEADO</a></p>
 {% endblock %}

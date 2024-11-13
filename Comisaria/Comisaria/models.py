@@ -24,14 +24,13 @@ class Empleado(AbstractUser):
     last_name2 = models.CharField(max_length=50, default='', blank=False, verbose_name='Apellido materno')
     email = models.EmailField(unique=True, verbose_name='Correo')
     puesto = models.IntegerField(choices=Puesto.choices, default=Puesto.ADMINISTRATIVO, verbose_name='Puesto')
-    #puesto = models.CharField(max_length=30, default='', blank=False, verbose_name='Puesto')
     register_date = models.DateTimeField(default= timezone.now, null=True, blank=False, verbose_name='Fecha de registro')
     num_phone = models.CharField(max_length=14, default='', blank=False, verbose_name='Telefono')
     class Meta:
         verbose_name = 'Empleado'
         verbose_name_plural = 'Empleados'
     def save(self, *args, **kwargs):
-        print(self.username)
+        #print(self.username)
         if (self.username== None or self.username==""):
             self.username = "{}{}{}".format(self.first_name.split()[0] if self.first_name.strip() else "", 
                                             self.last_name.split()[0] if self.first_name.strip() else "",
@@ -43,7 +42,6 @@ class Empleado(AbstractUser):
 
 
 class oficiales(models.Model):
-    #num_placa = models.UUIDField(primary_key=True, default=uuid.uuid4, verbose_name='Numero de placa')
     class Rango(models.IntegerChoices):
         POLICIA = 1, "Policía"
         INSPECTOR = 2, "Inspector"
@@ -51,7 +49,6 @@ class oficiales(models.Model):
     num_placa = models.PositiveIntegerField(default=0,blank=True, verbose_name='Numero de placa')
     id_emp = models.OneToOneField(Empleado, on_delete=models.CASCADE, verbose_name='ID empleado')
     rank = models.IntegerField(choices=Rango.choices, default=Rango.POLICIA, verbose_name='Rango')
-    #rank = models.CharField(max_length=21, verbose_name='Rango')
     def __str__(self):
         return f'{self.num_placa}'
     class Meta:
@@ -74,7 +71,6 @@ class reportes_de_servicio(models.Model):
     contenido = models.TextField(verbose_name='Contenido')
     num_placa = models.ForeignKey(oficiales, on_delete=models.CASCADE, verbose_name='Oficial')
     tipo = models.IntegerField(choices=Tipo.choices, default=Tipo.DIARIA, verbose_name='Tipo de reporte')
-    #tipo = models.CharField(max_length=20, verbose_name='Tipo de reporte')
     fecha = models.DateField(auto_now=False, verbose_name='Fecha de Reporte')
     class Meta:
         verbose_name = 'Reporte de servicio'
@@ -90,7 +86,6 @@ class registro_casos(models.Model):
     titulo = models.CharField(max_length=50, verbose_name='Titulo')
     descripcion = models.TextField(verbose_name='Descripcion')
     num_placa = models.ForeignKey(oficiales, on_delete=models.CASCADE, verbose_name='Designado')
-    #estatus = models.CharField(max_length=20, verbose_name='Estatus')
     estatus = models.IntegerField(choices=Estatus.choices, default=Estatus.ABIERTO, verbose_name='Estatus')
     fecha_inicio = models.DateField(auto_now=False, verbose_name='Fecha de Regsitro')
     fecha_fin = models.DateField(auto_now=False , null=True, blank=True, verbose_name='Fecha de cerrado')
@@ -112,7 +107,6 @@ class reportes_caso(models.Model):
     fecha_reporte = models.DateTimeField(verbose_name='Fecha de reporte')
     titulo = models.CharField(max_length=50, verbose_name='Titulo')
     contenido = models.TextField(verbose_name='Contenido')
-    #tipo = models.CharField(max_length=20, verbose_name='Tipo de reporte')
     tipo = models.IntegerField(choices=Tipo.choices, default=Tipo.INICIAL, verbose_name='Tipo de reporte')
     class Meta:
         verbose_name = 'Reporte de caso'

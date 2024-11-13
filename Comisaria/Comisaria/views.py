@@ -129,7 +129,7 @@ def empleado_view(request):
     else:
         message_error = None
     form = CustomUserCreationForm()
-    return render(request, 'comisaria/forms/form.html', {'form': form.as_p, 'error_message': message_error})
+    return render(request, 'comisaria/forms/form.html', {'form': form, 'error_message': message_error})
 
 
 @login_required
@@ -145,7 +145,7 @@ def oficial_view(request):
     else:
         message_error = None
     form = OficialesForm()
-    return render(request, 'comisaria/forms/form.html', {'form': form.as_p, 'error_message': message_error})
+    return render(request, 'comisaria/forms/form.html', {'form': form, 'error_message': message_error})
 
 @login_required
 def caso_view(request):
@@ -160,7 +160,7 @@ def caso_view(request):
     else:
         message_error = None
     form = CasosForm()
-    return render(request, 'comisaria/forms/form.html', {'form': form.as_p, 'error_message': message_error})
+    return render(request, 'comisaria/forms/form.html', {'form': form, 'error_message': message_error})
 @login_required
 def reporte_caso_view(request, caso_id):
     #reporte = get_object_or_404(registro_casos, pk = caso_id)
@@ -182,7 +182,7 @@ def reporte_caso_view(request, caso_id):
     else:
         message_error = None
     form = ReporteCasoForm()
-    return render(request, 'comisaria/forms/form.html', {'form': form.as_p, 'error_message': message_error})
+    return render(request, 'comisaria/forms/form.html', {'form': form, 'error_message': message_error})
 @login_required
 def reporte_servicio_view(request):
     if request.method == "POST":
@@ -196,4 +196,4 @@ def reporte_servicio_view(request):
     else:
         message_error = None
     form = ReporteServicioForm()
-    return render(request, 'comisaria/forms/form.html', {'form': form.as_p, 'error_message': message_error})
+    return render(request, 'comisaria/forms/form.html', {'form': form, 'error_message': message_error})

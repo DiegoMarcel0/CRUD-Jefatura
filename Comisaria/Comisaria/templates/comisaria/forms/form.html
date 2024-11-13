@@ -1,17 +1,16 @@
 {% extends 'comisaria/base.html' %}
+{% load crispy_forms_tags %}
 
-{%block titulo %} Ola{% endblock %}
+{%block titulo %} Crear {% endblock %}
 
 {% block contenido %}
-<form action="" method="post">
-    {% csrf_token %}
-
-    {% if form %}
-    {{ form }}
-    {% else %}
-    <p><h1>Nel pastel</h1></p>
-    {% endif %}
+<div class="container my-5">
+    <form action="" method="post">
+        {% csrf_token %}
     
-    <input type="submit" value="Enviar">
-</form>
+        {{ form|crispy }}
+        
+        <input type="submit" class="btn btn-primary" value="Enviar">
+    </form>
+</div>
 {% endblock %}

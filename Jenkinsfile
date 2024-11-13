@@ -16,7 +16,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Instala dependencias del requirements.txt en un contenedor temporal
-                bat 'docker run --rm -v $PWD:/app -w /app python:3.10 pip install -r requirements.txt'
+                bat 'docker run --rm -v %cd%:/app -w /app python:3.10 pip install -r requirements.txt'
 
             }
         }

@@ -14,7 +14,7 @@ urlpatterns = [
     path( "caso/crear", views.caso_view, name="caso_crear"),
     path( "caso/<int:caso_id>/crear", views.reporte_caso_view, name="reporte_caso_crear"),
     path( "reporte/crear", views.reporte_servicio_view, name="reporte_servicio_crear"),
-    #Formularios De Creacion
+    #Campos De Elminar
     path( "empleado/eliminar/<int:id>", views.empleado_delete_view, name="empleado_eliminar"),
     path( "oficial/eliminar/<int:id>", views.oficial_delete_view, name="oficial_eliminar"),
     path( "caso/eliminar/<int:id>", views.caso_delete_view, name="caso_eliminar"),

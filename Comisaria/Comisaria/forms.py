@@ -31,7 +31,7 @@ class ReporteCasoForm(forms.ModelForm):
         model = reportes_caso
         fields = ['titulo', 'contenido','fecha_reporte', 'tipo']
         widgets = {
-            'fecha_reporte': forms.DateInput(attrs={'type': 'date'}),  # Utiliza el tipo de input HTML5
+            'fecha_reporte': forms.DateInput(attrs={'type': 'date'}),  
         }
 
 class ReporteServicioForm(forms.ModelForm):

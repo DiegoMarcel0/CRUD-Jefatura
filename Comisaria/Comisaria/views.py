@@ -184,6 +184,7 @@ def reporte_servicio_view(request):
     form = ReporteServicioForm()
     return render(request, 'comisaria/forms/form.html', {'form': form})
 
+#ELIMINAR
 def empleado_delete_view(request, id):
     entidad = get_object_or_404(Empleado, pk = id)
     entidad.delete()

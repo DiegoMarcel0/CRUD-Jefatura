@@ -9,14 +9,14 @@ services:
       - ./MySQL/backup:/home # instancia de datos para iniciar finos
     healthcheck:
       test: ["CMD-SHELL", "mysql -uroot -ppass -e 'USE comisaria_db;' || exit 1"]
-      interval: 10s  # Intervalo entre chequeos
+      interval: 10s  
       timeout: 5s    # Tiempo máximo de espera por respuesta
       retries: 5     # Número de intentos antes de fallar
-      start_period: 30s  # Esperar 30 segundos antes de realizar el primer chequeo
+      start_period: 30s  
 
   django-app:
     build: ./Comisaria
-    container_name: ComisariaApp
+    container_name: ComisariaApp2
     depends_on:
       db:
         condition: service_healthy
@@ -25,7 +25,6 @@ services:
       - "8000:8000"
     environment:
       - DJANGO_DB_HOST=db
-      #poner el paquete completo
 volumes:
   mysql_data:
   

@@ -1,8 +1,11 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
-
+from django.views.generic import RedirectView
 urlpatterns = [
+    #Index
+    path( "inicio/", views.index, name="inicio"),
+    path('', RedirectView.as_view(pattern_name='inicio', permanent=False)),
     #Listas en general
     path( "empleado/", views.EmpleadoView.as_view(), name="empleado"),
     path( "oficial/", views.OficialView.as_view(), name="oficial"),
@@ -36,6 +39,5 @@ urlpatterns = [
     #Login//logout
     path("login/", auth_views.LoginView.as_view(), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name='logout'),
-    #Index
-    path( "inicio/", views.index, name="inicio"),
+    
 ]

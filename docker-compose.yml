@@ -1,9 +1,6 @@
 services:
   db:
     build: ./MySQL
-    container_name: db_Comisaria
-    ports:
-      - "5432:3306"
     volumes:
       - mysql_data:/var/lib/mysql/ #Guarda datos de forma local
       - ./MySQL/backup:/home # instancia de datos para iniciar finos
@@ -12,19 +9,51 @@ services:
       interval: 10s  
       timeout: 5s    # Tiempo máximo de espera por respuesta
       retries: 5     # Número de intentos antes de fallar
-      start_period: 30s  
+      start_period: 30s 
+    networks:
+      - backend
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
 
-  django-app:
+  django:
     build: ./Comisaria
-    container_name: ComisariaApp2
     depends_on:
       db:
         condition: service_healthy
     command: gunicorn --bind 0.0.0.0:8000 CRUD.wsgi:application
-    ports:
-      - "8000:8000"
     environment:
-      - DJANGO_DB_HOST=db
+      MYSQL_DATABASE: comisaria_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: pass
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+    networks:
+      - backend
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - django
+    volumes:
+      - static_volume:/static
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - backend
+
+networks:
+  backend:
+
 volumes:
   mysql_data:
+  static_volume:
   

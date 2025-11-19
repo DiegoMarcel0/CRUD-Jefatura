@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'CRUD.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'comisaria_db',
-        'USER': 'root',
-        'PASSWORD': 'pass',
-        'HOST': 'db_Comisaria',
-        'PORT': '3306'
+        'NAME': os.environ.get('MYSQL_DATABASE', 'comisaria_db'),
+        'USER': os.environ.get('MYSQL_USER', 'root'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'pass'),
+        'HOST': os.environ.get('MYSQL_HOST', 'db_comisaria'),
+        'PORT': os.environ.get('MYSQL_PORT', '3306'),
     }
 }
 

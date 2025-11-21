@@ -1,9 +1,8 @@
 services:
   db:
-    build: ./MySQL
+    image: diegomarcelos/jefatura-db
     volumes:
       - mysql_data:/var/lib/mysql/ #Guarda datos de forma local
-      - ./MySQL/backup:/home # instancia de datos para iniciar finos
     healthcheck:
       test: ["CMD-SHELL", "mysql -uroot -ppass -e 'USE comisaria_db;' || exit 1"]
       interval: 10s  
@@ -16,27 +15,30 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
+      placement:
+        constraints:
+          - node.role == manager
+    
 
   django:
-    build: ./Comisaria
+    image: diegomarcelos/jefatura-django
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     command: gunicorn --bind 0.0.0.0:8000 CRUD.wsgi:application
     environment:
       MYSQL_DATABASE: comisaria_db
       MYSQL_USER: root
       MYSQL_PASSWORD: pass
-      MYSQL_HOST: db
+      MYSQL_HOST: comisaria_db
       MYSQL_PORT: 3306
     networks:
       - backend
     deploy:
-      replicas: 2
+      replicas: 4
       restart_policy:
         condition: on-failure
   nginx:
-    build: ./nginx
+    image: diegomarcelos/jefatura-nginx
     ports:
       - "80:80"
     depends_on:
@@ -52,6 +54,7 @@ services:
 
 networks:
   backend:
+    driver: overlay
 
 volumes:
   mysql_data:
